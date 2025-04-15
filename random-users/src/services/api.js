@@ -1,3 +1,4 @@
+// api.js
 export const fetchRandomUsers = async (count = 10) => {
     try {
         const response = await fetch(`https://randomuser.me/api/?results=${count}`);
@@ -10,6 +11,6 @@ export const fetchRandomUsers = async (count = 10) => {
         return data.results;
     } catch (error) {
         console.error('Error fetching random users:', error);
-        throw error; // Re-throw to handle in component
+        throw error;
     }
 };

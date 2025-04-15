@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Reglas para controlar tamaño de SVG */
+svg {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* Estilos específicos para los iconos */
+.icon-svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Estilos para el spinner de carga */
+.spinner-container {
+    height: 64px;
+    width: 64px;
+}
+
+.loading-spinner {
+    width: 32px;
+    height: 32px;
+}
