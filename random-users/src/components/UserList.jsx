@@ -1,6 +1,6 @@
+// src/components/UserList.jsx
 import React, { useState, useEffect } from 'react';
 import { fetchRandomUsers } from '../services/api';
-import UserCard from './UserCard';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
@@ -17,7 +17,7 @@ const UserList = () => {
             const data = await fetchRandomUsers(10);
             setUsers(data);
             setLoading(false);
-        } catch (err) {
+        } catch (error) {
             setError('Error al cargar los usuarios');
             setLoading(false);
         }
@@ -26,6 +26,8 @@ const UserList = () => {
     const handleRefresh = () => {
         loadUsers();
     };
+
+
 
     // Renderizado condicional con spinner pequeño
     if (loading && users.length === 0) {
@@ -75,10 +77,67 @@ const UserList = () => {
                 </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {users.map((user) => (
-                    <UserCard key={user.login.uuid} user={user} />
-                ))}
+            <div className="flex justify-center">
+                <div className="w-full max-w-6xl overflow-x-auto">
+                    <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
+                        <table className="min-w-full divide-y divide-gray-200">
+                            <thead className="bg-blue-600">
+                                <tr>
+                                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                                        Foto
+                                    </th>
+                                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                                        Nombre
+                                    </th>
+                                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                                        Género
+                                    </th>
+                                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                                        Email
+                                    </th>
+                                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                                        Ubicación
+                                    </th>
+                                    <th scope="col" className="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+                                        Fecha Nac.
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200">
+                                {users.map((user) => (
+                                    <tr key={user.login.uuid} className="hover:bg-blue-50 transition-colors">
+                                        <td className="px-4 py-4 whitespace-nowrap ">
+                                            <div className="flex items-center">
+                                                <div className="flex-shrink-0 h-10 w-10">
+                                                    <img className="h-10 w-10 rounded-full" src={user.picture.thumbnail} alt={`${user.name.first} ${user.name.last}`} />
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="px-4 py-4 whitespace-nowrap">
+                                            <div className="text-sm font-medium text-gray-900">{user.name.first} {user.name.last}</div>
+                                        </td>
+                                        <td className="px-4 py-4 whitespace-nowrap">
+                                            <div className="text-sm text-gray-500">
+                                                {user.gender === 'male' ? 'Masculino' : 'Femenino'}
+                                            </div>
+                                        </td>
+                                        <td className="px-4 py-4">
+                                            <div className="text-sm text-gray-500 truncate max-w-xs">{user.email}</div>
+                                        </td>
+                                        <td className="px-4 py-4 whitespace-nowrap">
+                                            <div className="text-sm text-gray-500">
+                                                {user.location.city}, {user.location.country}
+                                            </div>
+                                        </td>
+                                        <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {new Date(user.dob.date).toLocaleDateString()}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     );
